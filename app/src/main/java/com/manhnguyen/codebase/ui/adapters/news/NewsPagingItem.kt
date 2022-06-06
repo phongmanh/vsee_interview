@@ -5,7 +5,7 @@ import com.manhnguyen.codebase.BR
 import com.manhnguyen.codebase.R
 import com.manhnguyen.codebase.data.model.News
 import com.manhnguyen.codebase.ui.adapters.*
-import com.manhnguyen.codebase.ui.movie.NewsDetailsActivity
+import com.manhnguyen.codebase.ui.news.NewsDetailsActivity
 import java.util.*
 
 class NewsPagingItem(

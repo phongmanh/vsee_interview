@@ -2,7 +2,6 @@ package com.manhnguyen.codebase.data.repository
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.kwabenaberko.newsapilib.models.Article
 import com.manhnguyen.codebase.common.Configs
 import com.manhnguyen.codebase.data.model.News
 import com.manhnguyen.codebase.data.toDataModel

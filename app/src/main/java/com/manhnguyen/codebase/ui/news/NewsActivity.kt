@@ -1,4 +1,4 @@
-package com.manhnguyen.codebase.ui.movie
+package com.manhnguyen.codebase.ui.news
 
 import android.content.Context
 import android.content.Intent
@@ -11,6 +11,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import butterknife.ButterKnife
@@ -29,11 +30,10 @@ import com.manhnguyen.codebase.ui.progressbar.ProgressHelper
 import com.manhnguyen.codebase.ui.viewmodels.NewsViewModel
 import kotlinx.android.synthetic.main.activity_news.*
 import kotlinx.android.synthetic.main.toolbar_layout.view.*
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class NewsActivity : ActivityBase(), ProgressHelper, ToolbarHelper {
@@ -64,8 +64,8 @@ class NewsActivity : ActivityBase(), ProgressHelper, ToolbarHelper {
     }
 
     private lateinit var binding: ActivityNewsBinding
-    private val newsViewModel: NewsViewModel by inject()
-    private val networkViewModel: NetworkViewModel by inject()
+    private val newsViewModel: NewsViewModel by viewModel()
+    private val networkViewModel: NetworkViewModel by viewModel()
 
     private var navItemSelected: Int = -1
     private var waitingForNetwork = false
@@ -142,6 +142,30 @@ class NewsActivity : ActivityBase(), ProgressHelper, ToolbarHelper {
 
 
     private val pagingAdapter: SimpleRecycleViewPagingAdapter = SimpleRecycleViewPagingAdapter()
+    private val stateListener: (CombinedLoadStates) -> Unit = { loadStates ->
+        if (loadStates.refresh is LoadState.Loading ||
+            loadStates.append is LoadState.Loading
+        ) {
+            showProgressBar()
+            showHideErrorContainer(false)
+        } else {
+            val errorState = when {
+                loadStates.append is LoadState.Error -> loadStates.append as LoadState.Error
+                loadStates.prepend is LoadState.Error -> loadStates.prepend as LoadState.Error
+                loadStates.refresh is LoadState.Error -> loadStates.refresh as LoadState.Error
+                else -> null
+            }
+            errorState?.let {
+                if (pagingAdapter.itemCount <= 0)
+                    showHideErrorContainer(true)
+                else {
+                    showHideErrorContainer(false)
+                }
+            }
+            hideProgressBar()
+        }
+    }
+
     private suspend fun loadingDataPaging() {
         rv_movie.apply {
             setHasFixedSize(true)
@@ -149,26 +173,9 @@ class NewsActivity : ActivityBase(), ProgressHelper, ToolbarHelper {
             layoutManager = LinearLayoutManager(this@NewsActivity)
             adapter = pagingAdapter
         }
-        pagingAdapter.addLoadStateListener { loadStates ->
-            when (loadStates.refresh) {
-                is LoadState.Loading -> {
-                    showProgressBar()
-                    showHideErrorContainer(false)
-                }
-                is LoadState.Error -> {
-                    if (pagingAdapter.itemCount <= 0)
-                        showHideErrorContainer(true)
-                    hideProgressBar()
-                }
-                !is LoadState.Loading -> {
-                    showHideErrorContainer(false)
-                    hideProgressBar()
-                }
-            }
-        }
-        repeatOnLifecycle(Lifecycle.State.STARTED) {
+        repeatOnLifecycle(Lifecycle.State.CREATED) {
             newsViewModel.loadNews(pagingAdapter)
-                .collect {
+                .collectLatest {
                     pagingAdapter.submitData(it)
                 }
         }
@@ -196,6 +203,16 @@ class NewsActivity : ActivityBase(), ProgressHelper, ToolbarHelper {
             e.printStackTrace()
         }
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        pagingAdapter.addLoadStateListener(stateListener)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        pagingAdapter.removeLoadStateListener(stateListener)
     }
 
     companion object {

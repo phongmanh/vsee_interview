@@ -1,5 +1,6 @@
 package com.manhnguyen.codebase.data.repository
 
+import androidx.compose.runtime.key
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
@@ -52,7 +53,7 @@ class NewsRemoteMediator(
                 newsDAO.insert(*response.toDataModel().toTypedArray())
                 val prevKey = if (page == 1) null else page - 1
                 val nextKey = if (endOfPaginationReached) null else page + 1
-                val remoteKeys =  newsData.map {
+                val remoteKeys = newsData.map {
                     RemoteKeys(it.newsId, prevKey, nextKey)
                 }.toTypedArray()
                 remoteKeysDAO.insert(*remoteKeys)

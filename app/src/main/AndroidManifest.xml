@@ -32,7 +32,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".ui.movie.NewsDetailsActivity"
+            android:name=".ui.news.NewsDetailsActivity"
             android:exported="true" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -53,7 +53,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.movie.NewsActivity"
+            android:name=".ui.news.NewsActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

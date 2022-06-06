@@ -7,7 +7,6 @@ import com.manhnguyen.codebase.data.model.News
 import com.manhnguyen.codebase.ui.adapters.BindableRecycleViewAdapter
 import com.manhnguyen.codebase.ui.adapters.BindableViewHolder
 import com.manhnguyen.codebase.ui.adapters.SimpleRecyclerItem
-import com.manhnguyen.codebase.ui.movie.NewsDetailsActivity
 
 class NewsItem(val news: News, override var adapter: BindableRecycleViewAdapter) :
     SimpleRecyclerItem() {

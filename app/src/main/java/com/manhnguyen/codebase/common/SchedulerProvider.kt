@@ -9,5 +9,4 @@ class SchedulerProvider(
     @NonNull val runOnUiThread: Scheduler,
     @NonNull val singleThread: Scheduler,
     @NonNull val trampolineThread: Scheduler
-) {
-}
+)

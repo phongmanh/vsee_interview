@@ -5,7 +5,6 @@ import androidx.room.Dao
 import androidx.room.Query
 import com.manhnguyen.codebase.data.model.News
 import java.util.*
-import java.util.concurrent.Flow
 
 @Dao
 interface NewsDAO : IDao<News> {

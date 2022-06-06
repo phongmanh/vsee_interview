@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.manhnguyen.codebase.R
-import com.manhnguyen.codebase.ui.movie.NewsActivity
+import com.manhnguyen.codebase.ui.news.NewsActivity
 import kotlinx.coroutines.delay
 
 class SplashActivity : AppCompatActivity() {

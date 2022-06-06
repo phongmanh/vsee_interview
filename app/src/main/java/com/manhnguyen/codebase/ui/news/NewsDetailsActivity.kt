@@ -1,4 +1,4 @@
-package com.manhnguyen.codebase.ui.movie
+package com.manhnguyen.codebase.ui.news
 
 import android.content.Context
 import android.content.Intent
@@ -12,8 +12,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.manhnguyen.codebase.BR
 import com.manhnguyen.codebase.R
-import com.manhnguyen.codebase.data.model.News
-import com.manhnguyen.codebase.databinding.ActivityNewsBinding
 import com.manhnguyen.codebase.databinding.ActivityNewsDetailsBinding
 import com.manhnguyen.codebase.ui.ToolbarHelper
 import com.manhnguyen.codebase.ui.base.ActivityBase

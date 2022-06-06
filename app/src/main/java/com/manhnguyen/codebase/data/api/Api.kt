@@ -19,14 +19,16 @@ import javax.net.ssl.*
 
 class Api constructor(private val context: Context) {
     lateinit var newsApiClient: NewsApiClient
+    private lateinit var newsApiUrl: String
+    lateinit var newsApi: NewsApi
 
-    var imagePosterBaseUrl: String = ""
-    var imageBackDropBaseUrl: String = ""
     init {
         initializeUrls()
     }
 
     private fun initializeUrls() {
+        newsApiUrl = "https://newsapi.org/v2/"
+        newsApi = apiBuilder(newsApiUrl, NewsApi::class.java)
         newsApiClient = NewsApiClient(BuildConfig.API_KEY)
     }
 
@@ -85,7 +87,7 @@ class Api constructor(private val context: Context) {
 
     private fun Request.addAuthQuery(): Request {
         return this.newBuilder().url(
-            this.url.newBuilder().addQueryParameter("api_key", "a2c5deb5fdb2ebb10ce53c1fe6b06eca")
+            this.url.newBuilder().addQueryParameter("apiKey", BuildConfig.API_KEY)
                 .build()
         ).build()
     }

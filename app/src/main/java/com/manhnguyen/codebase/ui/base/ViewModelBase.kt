@@ -5,11 +5,7 @@ import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ViewModel
 
-open class ViewModelBase() : ViewModel(), LifecycleObserver {
-
-    override fun onCleared() {
-        super.onCleared()
-    }
+open class ViewModelBase : ViewModel(), LifecycleObserver {
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     fun onResume() {

@@ -1,4 +1,4 @@
-package com.manhnguyen.codebase.ui.movie
+package com.manhnguyen.codebase.ui.news
 
 import android.util.Log
 import androidx.lifecycle.Lifecycle
@@ -18,22 +18,22 @@ class ActivityLifecycle(val activity: NewsActivity) :
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     fun onAppInBackground() {
-        --started;
+        --started
         android.util.Log.w(
             DebugName,
             "onActivityStopped -> application is visible: " + (started > 0) + " (" + activity::class + ")"
-        );
-        setVisible((started > 0));
+        )
+        setVisible((started > 0))
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
     fun onAppInPause() {
-        --resumed;
+        --resumed
         android.util.Log.w(
             DebugName,
             "onActivityPaused -> application is in foreground: " + (resumed > 0) + " (" + activity::class + ")"
         )
-        setForeground((resumed > 0));
+        setForeground((resumed > 0))
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
@@ -43,17 +43,17 @@ class ActivityLifecycle(val activity: NewsActivity) :
             DebugName,
             "onActivityResumed -> application is in foreground: " + (resumed > 0) + " (" + activity::class + ")"
         )
-        setForeground((resumed > 0));
+        setForeground((resumed > 0))
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     fun onAppInForeground() {
-        ++started;
+        ++started
         android.util.Log.w(
             DebugName,
             "onActivityStarted -> application is visible: " + (started > 0) + " (" + activity::class + ")"
         )
-        setVisible((started > 0));
+        setVisible((started > 0))
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
