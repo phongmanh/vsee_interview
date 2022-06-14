@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/idSearchView"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_25sdp"
+            android:layout_margin="10dp"
+            android:background="@color/backgroundGrey1"
+            android:elevation="5dp"
+            app:iconifiedByDefault="false"
+            app:searchIcon="@null"
+            app:queryHint="@string/search_hint"/>
+
+    </LinearLayout>
+</layout>

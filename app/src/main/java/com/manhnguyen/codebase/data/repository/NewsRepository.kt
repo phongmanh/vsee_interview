@@ -15,12 +15,12 @@ class NewsRepository constructor(
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) {
 
-    suspend fun getEverything(pageSize: Int, page: Int) =
+    suspend fun getEverything(pageSize: Int, page: Int, query: String) =
         suspendCoroutine<ArticleResponse> { continuation ->
             CoroutineScope(dispatcher).launch {
                 try {
                     val response =
-                        api.newsApi.getEverything("bbc-sport", page, pageSize, "publishedAt")
+                        api.newsApi.getEverything(query, page, pageSize, "publishedAt")
                     continuation.resumeWith(Result.success(response))
                 } catch (ex: Exception) {
                     continuation.resumeWith(Result.failure(ex))

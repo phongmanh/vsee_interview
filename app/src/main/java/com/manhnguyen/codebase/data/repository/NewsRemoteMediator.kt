@@ -5,6 +5,7 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
+import androidx.room.Query
 import androidx.room.withTransaction
 import com.manhnguyen.codebase.data.model.News
 import com.manhnguyen.codebase.data.model.RemoteKeys
@@ -17,7 +18,8 @@ import java.io.InvalidObjectException
 @OptIn(ExperimentalPagingApi::class)
 class NewsRemoteMediator(
     private val database: AppDatabase,
-    private val newsRepository: NewsRepository
+    private val newsRepository: NewsRepository,
+    private val query: String
 ) : RemoteMediator<Int, News>() {
 
     private val newsDAO = database.newsDao()
@@ -43,7 +45,7 @@ class NewsRemoteMediator(
                     remoteKeys.nextKey ?: return MediatorResult.Success(true)
                 }
             }
-            val response = newsRepository.getEverything(state.config.pageSize, page)
+            val response = newsRepository.getEverything(state.config.pageSize, page, query)
             val endOfPaginationReached = response.totalResults <= 0
             database.withTransaction {
                 if (loadType == LoadType.REFRESH) {

@@ -89,6 +89,7 @@ class NewsActivity : ActivityBase(), ProgressHelper, ToolbarHelper {
         networkViewModel.getInternetState().observe(this) { networkState ->
             //handleNetwork(networkState)
         }
+        initializeSearch()
     }
 
     /**
@@ -166,7 +167,7 @@ class NewsActivity : ActivityBase(), ProgressHelper, ToolbarHelper {
         }
     }
 
-    private suspend fun loadingDataPaging() {
+    private suspend fun loadingDataPaging(query: String) {
         rv_movie.apply {
             setHasFixedSize(true)
             setItemViewCacheSize(20)
@@ -174,7 +175,7 @@ class NewsActivity : ActivityBase(), ProgressHelper, ToolbarHelper {
             adapter = pagingAdapter
         }
         repeatOnLifecycle(Lifecycle.State.CREATED) {
-            newsViewModel.loadNews(pagingAdapter)
+            newsViewModel.loadNews(pagingAdapter, query)
                 .collectLatest {
                     pagingAdapter.submitData(it)
                 }
@@ -190,7 +191,7 @@ class NewsActivity : ActivityBase(), ProgressHelper, ToolbarHelper {
                 BottomNavigationView.OnNavigationItemSelectedListener { item ->
                     if (navItemSelected == item.itemId) return@OnNavigationItemSelectedListener true
                     when (item.itemId) {
-                        R.id.home_item -> lifecycleScope.launch { loadingDataPaging() }
+                        R.id.home_item -> lifecycleScope.launch { loadingDataPaging("") }
                     }
                     navItemSelected = item.itemId
                     return@OnNavigationItemSelectedListener true
@@ -203,6 +204,28 @@ class NewsActivity : ActivityBase(), ProgressHelper, ToolbarHelper {
             e.printStackTrace()
         }
 
+    }
+
+    private fun initializeSearch() {
+        binding.searchContainer.idSearchView.setOnQueryTextListener(object :
+            androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                query?.let {
+                    if (query.isNotEmpty()) {
+                        lifecycleScope.launch {
+                            loadingDataPaging(query)
+                        }
+                    }
+
+                }
+
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return true
+            }
+        })
     }
 
     override fun onResume() {

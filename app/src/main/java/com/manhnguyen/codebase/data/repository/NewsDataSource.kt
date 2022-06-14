@@ -21,7 +21,7 @@ class NewsDataSource constructor(private val repository: NewsRepository) :
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, News> {
         return try {
             val pageIndex = params.key ?: 1
-            val response = repository.getEverything(Configs.PAGE_SIZE, pageIndex)
+            val response = repository.getEverything(Configs.PAGE_SIZE, pageIndex,"")
             val results = response.articles
             val nextKey = if (results == null) null else {
                 pageIndex + (params.loadSize / 20)

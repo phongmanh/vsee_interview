@@ -20,11 +20,11 @@ class NewsViewModel(private val database: AppDatabase, private val newsRepositor
     ViewModel() {
 
     @OptIn(ExperimentalPagingApi::class)
-    fun loadNews(adapter: SimpleRecycleViewPagingAdapter): Flow<PagingData<SimpleRecyclerPagingItem>> =
+    fun loadNews(adapter: SimpleRecycleViewPagingAdapter, query: String): Flow<PagingData<SimpleRecyclerPagingItem>> =
         Pager(
             initialKey = 1,
             config = PagingConfig(Configs.PAGE_SIZE),
-            remoteMediator = NewsRemoteMediator(database, newsRepository)
+            remoteMediator = NewsRemoteMediator(database, newsRepository, query)
         ) {
             database.newsDao().getAll()
         }

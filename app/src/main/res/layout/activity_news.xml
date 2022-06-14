@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
 
@@ -14,8 +14,7 @@
         <import type="android.view.View" />
     </data>
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -27,10 +26,18 @@
             layout="@layout/toolbar_layout"
             app:title="@{title}" />
 
+        <include
+            android:id="@+id/searchContainer"
+            layout="@layout/search_item"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/mainToolbar" />
+
         <FrameLayout
             android:id="@+id/mainContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/_35sdp"
             android:layout_above="@id/movieNavigation"
             android:layout_below="@id/mainToolbar"
             android:fitsSystemWindows="true">
